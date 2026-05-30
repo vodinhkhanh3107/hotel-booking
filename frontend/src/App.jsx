@@ -1,0 +1,168 @@
+import React from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import { ConfigProvider, App as AntApp } from "antd";
+import { AuthProvider } from "./contexts/AuthContext";
+import "./App.css";
+import ScrollToTop from "./components/common/ScrollToTop";
+
+// 1. NHÓM XÁC THỰC & HỆ THỐNG
+import ProtectedRoute from "./pages/auth/ProtectedRoute";
+import Login from "./pages/auth/Login";
+import RoleSelection from "./pages/auth/RoleSelection";
+import RegisterForm from "./pages/auth/RegisterForm";
+
+// 2. NHÓM LAYOUT
+import CustomerLayout from "./components/layouts/CustomerLayout";
+import PartnerLayout from "./components/layouts/PartnerLayout";
+import AdminLayout from "./components/layouts/AdminLayout";
+
+// 3. NHÓM GUEST
+import GuestHome from "./pages/guest/Home";
+import GuestHotelList from "./pages/guest/HotelList";
+import GuestHotelDetail from "./pages/guest/HotelDetail";
+
+// 4. NHÓM CUSTOMER
+import CustomerHome from "./pages/customer/Home";
+import CustomerHotelList from "./pages/customer/HotelList";
+import CustomerHotelDetail from "./pages/customer/HotelDetail";
+import Checkout from "./pages/customer/Checkout";
+import CustomerBookings from "./pages/customer/CustomerBookings";
+import CustomerMessages from "./pages/customer/Messages";
+import Profile from "./pages/customer/Profile";
+
+// 5. NHÓM ĐỐI TÁC (PARTNER)
+import PartnerRegister from "./pages/partner/ParterRegister";
+import PartnerLogin from "./pages/partner/PartnerLogin";
+import PartnerDashboard from "./pages/partner/PartnerDashboard";
+import HotelManagement from "./pages/partner/HotelManagement";
+import PartnerModelRooms from "./pages/partner/PartnerModelRooms";
+import PartnerRooms from "./pages/partner/PartnerRooms";
+import PartnerBookings from "./pages/partner/PartnerBookings";
+import PartnerMessages from "./pages/partner/PartnerMessages";
+import PartnerDiscounts from "./pages/partner/PartnerDiscounts";
+import PartnerProfile from "./pages/partner/PartnerProfile";
+
+// 6. NHÓM QUẢN TRỊ VIÊN (ADMIN)
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminPartners from "./pages/admin/AdminPartners";
+import UserManagement from "./pages/admin/UserManagement";
+import AdminCategories from "./pages/admin/AdminCategories";
+import AdminAmenity from "./pages/admin/AdminAmenity";
+import AdminRevenues from "./pages/admin/AdminRevenues";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProfile from "./pages/admin/AdminProfile";
+import ErrorPage from "./pages/404/ErrorPage";
+import CheckoutSucess from "./pages/customer/CheckoutSuccess";
+
+const RootAdminRoute = () => {
+  const user = JSON.parse(sessionStorage.getItem("user")) || {};
+  const is_authorized = user.role === "admin";
+  return is_authorized ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/admin/dashboard" replace />
+  );
+};
+
+function App() {
+  return (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#1890ff",
+          borderRadius: 8,
+          fontFamily: "Inter, sans-serif",
+        },
+      }}
+    >
+      <AntApp>
+        <div
+          style={{ minHeight: "100vh", width: "100%", background: "#f5f7fa" }}
+        >
+          <BrowserRouter>
+            {/* QUAN TRỌNG: Đặt ScrollToTop ở đây để nó theo dõi mọi sự thay đổi Route */}
+            <ScrollToTop />
+
+            <Routes>
+              <Route path="/404" element={<ErrorPage />} /> 
+              {/* GIAO DIỆN CHUNG (GUEST & CUSTOMER) */}
+              <Route element={<CustomerLayout />} >
+                <Route path="/guest" element={<GuestHome />} />
+                <Route path="/guest/hotels" element={<GuestHotelList />} />
+                <Route path="/guest/hotel/:id" element={<GuestHotelDetail />} />
+
+                <Route path="/" element={<CustomerHome />} />
+                <Route path="hotels" element={<CustomerHotelList />} />
+                <Route path="hotel/:id" element={<CustomerHotelDetail />} />
+                <Route path="checkout/:id_room" element={<Checkout />} />
+                <Route path="checkout/success" element={<CheckoutSucess />}/>
+                <Route
+                  path="customerbookings"
+                  element={<CustomerBookings />}
+                />
+                <Route path="profile" element={<Profile />} />
+                <Route path="messages" element={<CustomerMessages />} />
+                
+              </Route>
+
+              {/* LOGIN/REGISTER */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<RoleSelection />} />
+              <Route path="/register/form" element={<RegisterForm />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/partner/login" element={<PartnerLogin />} />
+              <Route path="/partner/register" element={<PartnerRegister />} />
+
+              {/* PARTNER SYSTEM */}
+              <Route>
+                <Route path="/partner" element={<PartnerLayout />}>
+                  <Route
+                    index
+                    element={<Navigate to="/partner/dashboard" replace />}
+                  />
+                  <Route path="dashboard" element={<PartnerDashboard />} />
+                  <Route path="profile" element={<PartnerProfile />} />
+                  <Route path="rooms" element={<PartnerModelRooms />} />
+                  <Route path="hotels" element={<HotelManagement />} />
+                  <Route path="bookings" element={<PartnerBookings />} />
+                  <Route path="messages" element={<PartnerMessages />} />
+                  <Route path="roomnumbers" element={<PartnerRooms />} />
+                  <Route path="discounts" element={<PartnerDiscounts />} />
+                </Route>
+              </Route>
+
+              {/* ADMIN SYSTEM */}
+              <Route>
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route
+                    index
+                    element={<Navigate to="/admin/dashboard" replace />}
+                  />
+                  <Route path="dashboard" element={<AdminDashboard />} />
+                  <Route path="profile" element={<AdminProfile />} />
+                  <Route path="partners" element={<AdminPartners />} />
+                  <Route path="categories" element={<AdminCategories />} />
+                  <Route path="amenities" element={<AdminAmenity />} />
+                  <Route>
+                    <Route path="users" element={<UserManagement />} />
+                    <Route path="revenues" element={<AdminRevenues />} />
+                  </Route>
+                </Route>
+              </Route>
+
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </AntApp>
+    </ConfigProvider>
+  );
+}
+
+export default App;
