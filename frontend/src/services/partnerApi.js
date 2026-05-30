@@ -1,8 +1,5 @@
 import axiosClient from './axiosClient';
 
-/**
- * QUẢN LÝ CÁC API DÀNH RIÊNG CHO CHỦ KHÁCH SẠN / ĐỐI TÁC (PARTNER)
- */
 export const partnerApi = {
     // --- 1. QUẢN LÝ KHÁCH SẠN (HOTEL MANAGEMENT) ---
     

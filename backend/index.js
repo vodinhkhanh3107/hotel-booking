@@ -7,6 +7,8 @@ const routerAdmin = require("./api/v1/routes/admin/index.route");
 const routerClient = require("./api/v1/routes/client/index.route");
 const routerPartner = require("./api/v1/routes/partner/index.route");
 
+const path = require("path");
+
 const cron = require("./config/cron");
 
 // cors
@@ -37,6 +39,15 @@ routerAdmin(app);
 routerClient(app);
 routerPartner(app);
 
+if(process.env.NODE_ENV !== "production"){
+    app.get("*", (req,res) => {
+        res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+    })
+}
+
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+}
 
 
 app.listen(PORT, () => {

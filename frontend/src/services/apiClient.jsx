@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.NODE === "development" ? "http://localhost:5000/api/v1/management-hotel" : import.meta.env.VITE_API_URL,
 });
 
 request.interceptors.response.use((response) => {

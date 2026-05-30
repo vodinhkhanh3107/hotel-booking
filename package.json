@@ -1,0 +1,22 @@
+{
+  "name": "hotelbooking",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/vodinhkhanh3107/hotel-booking#readme",
+  "bugs": {
+    "url": "https://github.com/vodinhkhanh3107/hotel-booking/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vodinhkhanh3107/hotel-booking.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

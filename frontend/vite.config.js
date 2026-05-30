@@ -6,7 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // Chuyển /api -> backend Django (127.0.0.1:8000)
       '/api': {
         target: 'http://127.0.0.1:8000',
         changeOrigin: true,
