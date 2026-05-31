@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: import.meta.env.NODE === "development" ? "http://localhost:5000/api/v1/management-hotel" : import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.MODE === "development" ? "http://localhost:5000/api/v1/management-hotel" : import.meta.env.VITE_API_URL,
 });
+
 
 request.interceptors.response.use((response) => {
   return response.data;
@@ -72,6 +73,9 @@ export const AccountApiClient = {
 
 export const HotelApiClient = {
   getAllHotel: async () => {
+    console.log("MODE:", import.meta.env.MODE);
+    console.log("DEV:", import.meta.env.DEV);
+
     const res = await request.get(`/hotel`);
     return res;
   },
