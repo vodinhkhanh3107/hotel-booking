@@ -130,7 +130,6 @@ const Home = () => {
   })).sort((a, b) => b.realCount - a.realCount);
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       setTimeout(() => {
         setSortedDestinations(sDests.slice(0,12)); // Hiện Top 12 phổ biến nhất
         setLoading(false);
