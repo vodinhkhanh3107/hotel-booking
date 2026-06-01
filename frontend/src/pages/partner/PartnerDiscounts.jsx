@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Table,
@@ -15,7 +15,6 @@ import {
   InputNumber,
   Row,
   Col,
-  message,
 } from "antd";
 import {
   PlusOutlined,
@@ -27,7 +26,6 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { MOCK_HOTELS, MOCK_DISCOUNTS } from "../../constants/mockData.jsx";
 import {
   HotelApiPartner,
   PromotionApiPartner,
@@ -52,12 +50,6 @@ const PartnerDiscounts = () => {
   const [editingId, setEditingId] = useState(); // Trạng thái đang sửa mã nào
   const [form] = Form.useForm();
   const datesPreview = Form.useWatch(form);
-  console.log(datesPreview);
-
-  // Khởi tạo thêm status cho mock data nếu chưa có
-  const [discounts, setDiscounts] = useState(
-    MOCK_DISCOUNTS.map((d) => ({ ...d, status: d.status || "active" })),
-  );
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
@@ -123,16 +115,8 @@ const PartnerDiscounts = () => {
         }
         catch(error){
           antdMessage.error("Lỗi hệ thống")
+          console.error(error);
         }
-        
-        // setDiscounts((prev) =>
-        //   prev.map((item) =>
-        //     item.id_discount === record.id_discount
-        //       ? { ...item, status: isCurrentlyLocked ? "active" : "locked" }
-        //       : item,
-        //   ),
-        // );
-        // antdMessage.success(`Đã ${actionText} mã giảm giá thành công!`);
       },
     });
   };
@@ -174,16 +158,12 @@ const PartnerDiscounts = () => {
           {/* THÊM CHECK MẢNG TẠI ĐÂY */}
           {Array.isArray(list_hotels) &&
             list_hotels.map((hotel) => {
-              {
-                /* const hotel = MOCK_HOTELS.find(h => h.id_hotel === id); */
-              }
               return (
                 <Tag icon={<HomeOutlined />} key={hotel} color="cyan">
                   {hotel ? hotel : ""}
                 </Tag>
               );
             })}
-          {/* {!id_list || id_list.length === 0 ? <Text type="secondary">Tất cả</Text> : null} */}
         </div>
       ),
     },

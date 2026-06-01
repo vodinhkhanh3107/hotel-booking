@@ -31,12 +31,6 @@ import {
 
 // Import Cloudinary
 import CloudinaryUpload from "../../components/common/CloudinaryUpload.jsx";
-// Data mẫu
-import {
-  MOCK_HOTELS,
-  MOCK_ROOMS,
-  ALL_AMENITIES,
-} from "../../constants/mockData.jsx";
 import {
   AmenityApiPartner,
   HotelApiPartner,
@@ -59,24 +53,19 @@ const PartnerRooms = () => {
   const [ModelRooms, setModelRoom] = useState([]);
   const [amenities, setAmenity] = useState([]);
   const [hotels, setHotels] = useState([]);
-  console.log(ModelRooms);
   const [form] = Form.useForm();
   const thumbnailPreview = Form.useWatch("thumbnail", form);
 
   const [selectedHotel, setSelectedHotel] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [fileList, setFileList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
   const id_partner = cookies.partner.id;
   useEffect(() => {
-    console.log(id_partner);
-
     const fetchApiHotel = async () => {
       const res = await HotelApiPartner.getAllHotel(id_partner, "APPROVED");
-      console.log(res);
       if (res.status === 200) {
         setHotels(res.hotels);
         setSelectedHotel(res.hotels ? res.hotels[0]?._id : null);
@@ -89,7 +78,6 @@ const PartnerRooms = () => {
   useEffect(() => {
     const fetchApiRoom = async () => {
       const res = await RoomApiPartner.getAllRoom(selectedHotel);
-      console.log(res);
       if (res.status === 200) {
         setRoom(res.rooms);
       }
@@ -101,9 +89,6 @@ const PartnerRooms = () => {
       setLoading(false);
     }, 1000);
   }, [selectedHotel, loading]);
-
-  // State hứng link từ Cloudinary
-  const [imageUrl, setImageUrl] = useState("");
 
   // --- LOGIC XỬ LÝ KHÓA / MỞ KHÓA (CÓ ALERT) ---
   const handleToggleStatus = (record) => {
@@ -134,6 +119,7 @@ const PartnerRooms = () => {
           setLoading(true);
           message.success(res.message);
         } catch (error) {
+          console.error(error);
           message.error("Lỗi hệ thống!");
         }
       },
@@ -203,7 +189,6 @@ const PartnerRooms = () => {
 
   const fetchApiRoomType = async () => {
     const res = await ModelRoomApiPartner.getAllModelRoom(id_partner, "active");
-    console.log(res);
     if (res.status === 200) {
       setModelRoom(res.modelRooms);
     }
@@ -211,14 +196,12 @@ const PartnerRooms = () => {
 
   const fetchApiAmenity = async () => {
     const res = await AmenityApiPartner.getAllAmenites("active");
-    console.log(res);
     if (res.status === 200) {
       setAmenity(res.amenities);
     }
   };
 
   const handleEdit = (record) => {
-    console.log(record);
     setEditingId(record._id);
     form.setFieldsValue({
       ...record,
@@ -234,8 +217,6 @@ const PartnerRooms = () => {
     setIsModalOpen(false);
     setEditingId(null);
     form.resetFields();
-    setFileList([]);
-    setImageUrl("");
   };
 
   const handleCreateRoom = () => {
@@ -251,7 +232,6 @@ const PartnerRooms = () => {
       setLoading(true);
       setRoom(res.rooms);
     }
-    console.log(id_hotel);
   };
 
   const columns = [

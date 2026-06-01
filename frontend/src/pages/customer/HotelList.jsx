@@ -13,7 +13,6 @@ import {
   Spin,
   App as AntApp,
   Badge,
-  message,
 } from "antd";
 import {
   EnvironmentOutlined,
@@ -22,8 +21,6 @@ import {
   RightOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-// import axiosClient from '../../services/axiosClient';
-import { MOCK_ROOMS, MOCK_HOTELS } from "../../constants/mockData.jsx";
 import { HotelApiClient, ModelHotelApiClient } from "../../services/apiClient.jsx";
 
 const { Title, Text } = Typography;
@@ -43,14 +40,10 @@ const HotelList = () => {
   const searchLocation = query.get("search_location") || query.get("location") || query.get("model_hotel");
   const checkIn = query.get("check_in");
   const checkOut = query.get("check_out");
-  console.log(query);
-  console.log(searchLocation);
-  console.log(keyword);
 
   useEffect(() => {
     const fetchApiHotelLocation = async () => {
       const res = await HotelApiClient.searcHotelByLocation(searchLocation);
-      console.log(res);
       if (res.status === 200) {
         setTimeout(() => {
           setHotel(res.hotels);
@@ -60,7 +53,6 @@ const HotelList = () => {
 
     const fetchApiHotel = async () => {
       const res = await HotelApiClient.getAllHotel();
-      console.log(res);
       if (res.status === 200) {
         setTimeout(() => {
           setHotel(res.hotels);
@@ -69,9 +61,7 @@ const HotelList = () => {
     }
 
     const fetchApiHotelByModelHotel = async () => {
-      console.log(keyword);
       const res = await ModelHotelApiClient.getHotelsByModelHotel(searchLocation);
-      console.log(res);
       if(res.status === 200){
         setHotel(res.hotelByModelHotel)
       }
@@ -96,6 +86,7 @@ const HotelList = () => {
       
     
     } catch (error) {
+      console.error(error);
       message.error("Lỗi kết nối Backend");
       // loadMockData("Lỗi kết nối Backend");
     } finally {

@@ -28,16 +28,11 @@ import {
   ReloadOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 
 // Import thêm component Cloudinary
 import CloudinaryUpload from "../../components/common/CloudinaryUpload";
 
 // ĐÃ CẬP NHẬT: Chỉ giữ lại các import cần thiết
-import {
-  MOCK_HOTELS,
-  HOTEL_TYPES as MOCK_CATEGORIES,
-} from "../../constants/mockData.jsx";
 import {
   HotelApiPartner,
   ModelHotelPartner,
@@ -60,7 +55,6 @@ const HotelManagement = () => {
   const { message: antdMessage, modal: antdModal } = AntApp.useApp();
   const [form] = Form.useForm();
   const thumbnailPreview = Form.useWatch("thumbnail", form);
-  console.log(thumbnailPreview);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -156,6 +150,7 @@ const HotelManagement = () => {
           setIsModalOpen(false);
         }, 1000);
       } catch (error) {
+        console.error(error);
         antdMessage.error("Lỗi hệ thống!");
         setLoading(false);
       }
@@ -176,6 +171,7 @@ const HotelManagement = () => {
           setIsModalOpen(false);
         }, 1000);
       } catch (error) {
+        console.error(error);
         antdMessage.error("Lỗi hệ thống!");
         setLoading(false);
       }
@@ -183,7 +179,6 @@ const HotelManagement = () => {
   };
 
   const handleSetValuesForm = (record) => {
-    console.log(record);
     setEditingId(record._id);
     form.setFieldsValue(record);
     setIsModalOpen(true);
@@ -202,7 +197,6 @@ const HotelManagement = () => {
   };
 
   const handleSubmitReApproved = async () => {
-    console.log(editingId);
     try {
       const res = await HotelApiPartner.reApprovedHotel(editingId,{status: "123"});
       if (res.status >= 400) {
@@ -219,7 +213,7 @@ const HotelManagement = () => {
         setIsModalApproveOpen(false);
       }, 1000);
     } catch (error) {
-      console.log(error)
+      console.error(error);
       antdMessage.error("Lỗi hệ thống!");
       setLoading(false);
     }

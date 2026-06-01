@@ -2,14 +2,13 @@ import React from 'react';
 import { Form, Input, Button, Card, Typography, App as AntApp } from 'antd';
 import { LockOutlined, UserOutlined, ShopOutlined } from '@ant-design/icons';
 import { useNavigate, Link } from 'react-router-dom';
-import { MOCK_USERS } from '../../constants/mockData.jsx';
 import { AuthApiPartner } from '../../services/apiPartner.jsx';
 import { useCookies } from 'react-cookie';
 
 const { Title, Text } = Typography;
 
 const PartnerLogin = () => {
-  const [cookies,setCookie] = useCookies(["partner"]);
+  const [_,setCookie] = useCookies(["partner"]);
 
   const navigate = useNavigate();
   const { message } = AntApp.useApp();
@@ -31,21 +30,6 @@ const PartnerLogin = () => {
     else{
       message.error(response.message);
     }
-    // setCookie("partner",response.account);
-    // const user = MOCK_USERS.find(
-    //   (u) => 
-    //     (u.email === account || u.user_name === account) && 
-    //     u.password === password && 
-    //     u.role === 'partner'
-    // );
-
-    // if (user) {
-    //   sessionStorage.setItem('user', JSON.stringify(user));
-    //   message.success('Đăng nhập Kênh Đối Tác thành công!');
-    //   navigate('/partner/dashboard');
-    // } else {
-    //   message.error('Tài khoản hoặc mật khẩu không chính xác!');
-    // }
   };
 
   return (

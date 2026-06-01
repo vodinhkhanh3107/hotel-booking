@@ -31,7 +31,6 @@ import {
 
 // Import Cloudinary
 import CloudinaryUpload from "../../components/common/CloudinaryUpload";
-import { MOCK_HOTELS } from "../../constants/mockData.jsx";
 import {
   AccountApiPartner,
   AuthApiPartner,
@@ -52,7 +51,6 @@ const PartnerProfile = () => {
   const [editForm] = Form.useForm();
   const avartarPreview = Form.useWatch("avartar",editForm);
 
-  const [imageUrl, setImageUrl] = useState("");
 
   const id_partner = cookies.partner.id;
   useEffect(() => {
@@ -62,10 +60,8 @@ const PartnerProfile = () => {
         message.error(res.message);
         return;
       }
-
       setPartner(res.account);
     };
-
     fetchApi();
 
   }, [id_partner, message,loading]);
@@ -103,7 +99,6 @@ const PartnerProfile = () => {
   };
 
   const handleSetValuesform = () => {
-    console.log(avartarPreview)
     setIsEditModalVisible(true);
     editForm.setFieldsValue(partner)
   }
@@ -238,11 +233,6 @@ const PartnerProfile = () => {
               >
                 {partner.createdAt ? formatDate(partner.createdAt) : ""}
               </Descriptions.Item>
-              {/* <Descriptions.Item label="Phạm vi quản lý">
-                <Tag color="blue">
-                  {partner?.type?.toUpperCase() || "HOTEL"}
-                </Tag>
-              </Descriptions.Item> */}
             </Descriptions>
           </Col>
         </Row>
@@ -280,7 +270,6 @@ const PartnerProfile = () => {
               {/* Tích hợp Cloudinary */}
               <CloudinaryUpload onUploadSuccess={(url) => {
                 editForm.setFieldValue("avartar",url)
-                setImageUrl(url)
               }} />
 
               {(

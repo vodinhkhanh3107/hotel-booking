@@ -37,7 +37,6 @@ import dayjs from "dayjs";
 const AdminRevenues = () => {
   const refDates = useRef(null);
   const refHotelId = useRef();
-  const [selectedId, setSelectedId] = useState();
   const [hotels, setHotel] = useState([]);
   const [totalRevenueSysTem, setTotalRevenueSystem] = useState(0);
   const [transaction_list, setTransactionList] = useState([]);
@@ -47,7 +46,6 @@ const AdminRevenues = () => {
   useEffect(() => {
     const fetchApiRevenueReport = async () => {
       const res = await RevenueReportApiAdmin.getRevenueReport();
-      console.log(res);
       if (res.status === 200) {
         setTransactionList(res.revenueReports);
         // 3. Tính toán tổng lợi nhuận Admin dựa trên danh sách hiện tại
@@ -62,7 +60,6 @@ const AdminRevenues = () => {
 
     const fetchApiHotel = async () => {
       const res = await HotelApiAdmin.getAllHotelOfPartner("APPROVED");
-      console.log(res);
       if (res.status === 200) {
         setHotel(res.hotels);
       }
@@ -137,12 +134,7 @@ const AdminRevenues = () => {
     },
   ];
 
-  const handleFilter = async (value) => {
-    console.log(value);
-    console.log(refDates);
-    console.log(refHotelId);
-    console.log(selectedId)
-
+  const handleFilter = async () => {
     if(refDates.current){
       const dateStartFormat = dayjs(refDates.current[0]).format("YYYY-MM-DD");
       const dateEndFormat = dayjs(refDates.current[1]).format("YYYY-MM-DD");
@@ -167,8 +159,6 @@ const AdminRevenues = () => {
         setTransactionList(res.revenueReports);
       }
     }
-    
-    
   };
 
   return (
@@ -198,7 +188,7 @@ const AdminRevenues = () => {
                   placeholder={["Từ ngày", "Đến ngày"]}
                   onChange={(dates) => {
                     refDates.current = dates
-                    handleFilter(dates);
+                    handleFilter();
                   }}
                 />
               </Col>
@@ -210,7 +200,7 @@ const AdminRevenues = () => {
                   allowClear
                   onChange={(id) => {
                     refHotelId.current = id
-                    handleFilter(id);
+                    handleFilter();
                   }}
                 >
                   {hotels.map((hotel) => {
@@ -265,7 +255,8 @@ const AdminRevenues = () => {
           columns={columns}
           dataSource={transaction_list}
           rowKey="transaction_id"
-          pagination={{ pageSize: 8 }}
+          pagination={{ pageSize }}
+          onChange={(pagination) => setCurrentPage(pagination.current)}
         />
       </Card>
     </div>

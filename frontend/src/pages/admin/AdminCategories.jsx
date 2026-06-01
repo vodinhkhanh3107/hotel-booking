@@ -45,45 +45,21 @@ const AdminCategories = () => {
   const [form] = Form.useForm();
   const thumbnailPreview = Form.useWatch("thumbnail", form);
 
-  const [categories_list, setCategoriesList] = useState([]);
+  // const [categories_list, setCategoriesList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10; // Số dòng mỗi trang
   useEffect(() => {
     const fetchApi = async () => {
       const res = await ModelHotelApiAdmin.getAllModelHotel();
-      console.log(res);
       if (res.status >= 400) {
         message.error(res.message);
       }
-
       setModelHotel(res.modelHotels);
     };
 
     fetchApi();
-    // const saved_categories = localStorage.getItem('HOTEL_CATEGORIES');
-    // if (saved_categories) {
-    //   const parsedData = JSON.parse(saved_categories);
-    //   // Kiểm tra an toàn: Nếu data trong máy thiếu trường status, ép nó về 'active' luôn
-    //   const validatedData = parsedData.map(item => ({
-    //     ...item,
-    //     status: item.status || 'active'
-    //   }));
-    //   setCategoriesList(validatedData);
-    // } else {
-    //   // Nạp từ mockData và ép 'active'
-    //   const initial_data = HOTEL_TYPES.map(item => ({
-    //     ...item,
-    //     status: 'active'
-    //   }));
-    //   setCategoriesList(initial_data);
-    //   localStorage.setItem('HOTEL_CATEGORIES', JSON.stringify(initial_data));
-    // }
   }, [loading]);
 
-  const save_to_db = (new_data) => {
-    setCategoriesList(new_data);
-    localStorage.setItem("HOTEL_CATEGORIES", JSON.stringify(new_data));
-  };
 
   const handle_toggle_status = (record) => {
     const is_active = record.status === "active";
@@ -95,16 +71,15 @@ const AdminCategories = () => {
       okText: action_text,
       okType: is_active ? "danger" : "primary",
       centered: true,
-      onOk: () => {
-        const new_list = categories_list.map((item) => {
-          if (item.key === record.key) {
-            return { ...item, status: is_active ? "blocked" : "active" };
-          }
-          return item;
-        });
-        save_to_db(new_list);
-        message.success(`Đã ${action_text} thành công!`);
-      },
+      // onOk: () => {
+      //   const new_list = categories_list.map((item) => {
+      //     if (item.key === record.key) {
+      //       return { ...item, status: is_active ? "blocked" : "active" };
+      //     }
+      //     return item;
+      //   });
+      //   message.success(`Đã ${action_text} thành công!`);
+      // },
     });
   };
 
@@ -218,14 +193,10 @@ const AdminCategories = () => {
     form.setFieldsValue(record);
     setIsModalVisible(true);
   };
-
   const handle_submit = async (values) => {
-    
-
     if (editing_key) {
       const res = await ModelHotelApiAdmin.updateModelHotel(editing_key,values);
       if (res.status >= 400) {
-        
         setLoading(false)
         message.error(res.message);
         return;

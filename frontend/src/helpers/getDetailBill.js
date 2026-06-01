@@ -1,7 +1,4 @@
-
-
 export const getDetailBill = (dates,room,selectedDiscount) => {
-    console.log(dates)
     let nights = 0;
     if (dates && dates[0] && dates[1]) {
       nights = dates[1].startOf('day').diff(dates[0].startOf('day'), 'day');

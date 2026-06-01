@@ -72,6 +72,7 @@ const AdminProfile = () => {
       message.success("Cập nhật thành công!");
       setIsEditModalVisible(false);
     } catch (error) {
+      console.error(error);
       message.error("Lỗi khi cập nhật!");
     } finally {
       setLoading(true);
@@ -214,14 +215,6 @@ const AdminProfile = () => {
               >
                 Vừa xong
               </Descriptions.Item>
-              {/* <Descriptions.Item label="Phạm vi quản lý">
-                <Space size={[0, 4]} wrap>
-                  <Tag color="volcano">Hotels</Tag>
-                  <Tag color="volcano">Users</Tag>
-                  <Tag color="volcano">Bookings</Tag>
-                  <Tag color="volcano">Revenue</Tag>
-                </Space>
-              </Descriptions.Item> */}
             </Descriptions>
           </Col>
         </Row>

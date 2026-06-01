@@ -32,7 +32,6 @@ const { Title, Text } = Typography;
 const AdminAmenity = () => {
   const { textSearch, handleSearch } = useHandleSearch();
 
-
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10; // Số dòng mỗi trang
@@ -43,8 +42,6 @@ const AdminAmenity = () => {
   const [editingId, setEditingId] = useState(null);
   const [form] = Form.useForm();
 
-  const [searchText, setSearchText] = useState("");
-
   // Khởi tạo dữ liệu
   useEffect(() => {
     const fetchApi = async () => {
@@ -54,18 +51,10 @@ const AdminAmenity = () => {
         message.error(res.message);
         return;
       }
-
       setAmenity(res.amenities);
     };
 
     fetchApi();
-    // const localData = localStorage.getItem('SYSTEM_AMENITIES');
-    // if (localData) {
-    //   setAmenities(JSON.parse(localData));
-    // } else {
-    //   setAmenities(ALL_AMENITIES);
-    //   localStorage.setItem('SYSTEM_AMENITIES', JSON.stringify(ALL_AMENITIES));
-    // }
   }, [loading]);
 
 
@@ -78,7 +67,6 @@ const AdminAmenity = () => {
       });
 
       if (res.status >= 400) {
-        
         setLoading(false);
         message.error(res.message);
         return;

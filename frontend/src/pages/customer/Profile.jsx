@@ -36,7 +36,6 @@ import { useNavigate } from "react-router-dom";
 
 // IMPORT CLOUDINARY & MOCK DATA
 import CloudinaryUpload from "../../components/common/CloudinaryUpload";
-import { MOCK_USERS } from "../../constants/mockData.jsx";
 import { useCookies } from "react-cookie";
 import { AccountApiClient } from "../../services/apiClient.jsx";
 import dayjs from "dayjs";
@@ -75,7 +74,6 @@ const Profile = () => {
 
     const fetchApi = async () => {
       const myProfile = await AccountApiClient.myAccount(id_user);
-      console.log(myProfile)
       if(myProfile.status >= 400){
         setLoading(true);
         return antdMessage.error(myProfile.message);
@@ -90,7 +88,6 @@ const Profile = () => {
   const handleUpdateProfile = async (values) => {
     try{
       const res = await AccountApiClient.updateInfo(user._id,values);
-      console.log(res);
       if(res.status >= 400){
         message.error(res.message);
         return;
@@ -104,6 +101,7 @@ const Profile = () => {
       }, 1000);
     }
     catch(error){
+      console.error(error);
       message.error("Lỗi hệ thống!");
       return;
     }

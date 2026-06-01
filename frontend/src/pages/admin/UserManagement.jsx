@@ -33,7 +33,6 @@ import {
 } from "@ant-design/icons";
 
 // IMPORT MOCK DATA
-import { MOCK_USERS } from "../../constants/mockData.jsx";
 import { AccountApiAdmin, UserApiAdmin } from "../../services/apiAdmin.jsx";
 
 import avartar from "../../../public/avartar.jpg";
@@ -45,12 +44,9 @@ const { Title, Text } = Typography;
 
 const UserManagement = () => {
   const { textSearch, handleSearch } = useHandleSearch();
-  
-
   const [cookies, _] = useCookies(["admin"]);
   const [accounts, setAccount] = useState([]);
   const [loading, setLoading] = useState(false);
-
 
   // State cho modal
   const [is_modal_open, setIsModalOpen] = useState(false);
@@ -95,6 +91,7 @@ const UserManagement = () => {
             }, 1000);
           }
         } catch (error) {
+          console.log(error);
           message.error("Lỗi hệ thống!");
         }
       },

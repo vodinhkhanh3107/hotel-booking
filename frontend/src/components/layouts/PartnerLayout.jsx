@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Button, theme, Avatar, Dropdown, App as AntApp, Modal, Typography, Badge } from 'antd';
 import {
   MenuFoldOutlined,
@@ -47,18 +47,12 @@ const PartnerLayout = () => {
 
   // 2. Kiểm tra quyền truy cập
   const id_partner = cookies.partner.id;
-  useEffect(() => {
-    if (!cookies.partner) {
-      message.error('Bạn không có quyền truy cập vùng đối tác!');
-      navigate('/partner/login'); 
-    }
-  }, [cookies.partner, navigate, message]);
+  
 
   useEffect(() => {
     const fetchApi = async () => {
       const res = await OrderApiPartner.getAllOrder(id_partner,"PENDING");
       if(res.status === 200){
-        console.log(res);
         set_pending_count(res.orders.length);
       }
     }
@@ -139,7 +133,6 @@ const PartnerLayout = () => {
   const fetchPendingCount = async () => {
    try {
      const res = await OrderApiPartner.getAllOrder(id_partner,"PENDING");
-
      if (res.status === 200) {
        set_pending_count(res.orders.length);
        setTimeout(() => {
@@ -147,7 +140,7 @@ const PartnerLayout = () => {
        }, 1000);
      }
    } catch (error) {
-    console.log(error)
+     console.log(error)
      message.error("Lỗi cập nhật số lượng chờ duyệt");
    }
  };

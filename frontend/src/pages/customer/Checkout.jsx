@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Card,
   Button,
@@ -23,7 +23,6 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
-import axiosClient from "../../services/axiosClient";
 import dayjs from "dayjs";
 
 // IMPORT MOCK DATA
@@ -94,9 +93,7 @@ const Checkout = () => {
 
     const fetchApiRoom = async () => {
       const res = await RoomApiClient.getDetailRoom(id_room);
-      console.log(res);
       if (res.status === 200) {
-        console.log(res);
         setRoom(res.room);
         setPromotion(res.promotions);
       }
@@ -160,6 +157,7 @@ const Checkout = () => {
       antdMessage.success(res.message);
       setLoading(true);
     } catch (error) {
+      console.error(error);
       antdMessage.error("Lỗi kết nối với hệ thống");
     } finally {
       setTimeout(() => {

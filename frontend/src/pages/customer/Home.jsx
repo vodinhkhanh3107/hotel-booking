@@ -23,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 import beach from "/assets/beach.jpg";
 import { Pagination } from "antd";
 // 1. KẾT NỐI DỮ LIỆU
-import { MOCK_HOTELS } from "../../constants/mockData.jsx";
 import {
   HotelApiClient,
   ModelHotelApiClient,
@@ -84,7 +83,6 @@ const Home = () => {
   useEffect(() => {
     const fetchApiModelHotel = async () => {
       const res = await ModelHotelApiClient.getAllModelHotel();
-      console.log(res);
       if (res.status === 200) {
         setModelHotel(res.modelHotel);
       }
@@ -113,7 +111,6 @@ const Home = () => {
     const fetchApi = async () => {
       const res = await HotelApiClient.getDiscountHotel();
       if (res.status === 200) {
-        console.log(res.hotelByPromotions);
         setDiscountHotels(res.hotels.slice(0, 4));
         setTimeout(() => {
           setLoading(false);
@@ -140,10 +137,9 @@ const Home = () => {
       }, 600);
     };
     fetchData();
-  }, []);
+  }, [sDests]);
 
   const handleSetQuery = (city) => {
-    console.log("chạy vào đây");
     refCity.current = city;
     setTimeout(() => {
       handleNavigate("location");
@@ -152,9 +148,6 @@ const Home = () => {
 
   // --- CẬP NHẬT ĐIỀU HƯỚNG SANG CỤM /CUSTOMER ---
   const handleNavigate = async (filters) => {
-    console.log(refCity);
-    console.log(query);
-
     const params = new URLSearchParams();
     switch (filters) {
       case "search_location":
@@ -173,11 +166,6 @@ const Home = () => {
       default:
         return;
     }
-    // const params = new URLSearchParams();
-    // console.log(params);
-    // if (filters.location) params.set('location', filters.location);
-    // if (filters.type) params.set('type', filters.type);
-    // navigate(`/hotels?${params.toString()}`); // Đã thêm /customer
   };
 
   return (

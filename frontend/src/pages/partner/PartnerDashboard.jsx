@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Statistic, Table, Tag, Typography, Spin, Space, Select, message } from 'antd';
+import { Row, Col, Card, Statistic, Table, Tag, Typography, Spin, Space, Select } from 'antd';
 import { Column } from '@ant-design/plots';
 import { 
   LineChartOutlined, 
@@ -14,7 +14,7 @@ const { Option } = Select;
 import { useCookies } from "react-cookie";
 
 const PartnerDashboard = () => {
-  const [cookies,setCookie] = useCookies();
+  const [cookies,_] = useCookies();
 
   const [loading, setLoading] = useState(true);
   const [hotels, setHotels] = useState([]);
@@ -31,14 +31,11 @@ const PartnerDashboard = () => {
     const fetchApiHotel = async() => {
       const res = await HotelApiPartner.getAllHotel(id_partner,"APPROVED");
       if(res.status === 200){
-        console.log(res);
         setHotels(res.hotels);
         setSelectedHotel(res.hotels[0]._id);
         setLoading(false);
       }
     }
-    
-    
     fetchApiHotel();
   }, [id_partner]);
 
@@ -46,8 +43,6 @@ const PartnerDashboard = () => {
     const fetchApiRevenue = async () => {
       const res = await RevenueReportApiPartner.getRevenueByHotel(selectedHotel);
       if(res.status === 200){
-        console.log(res.revenueByHotel);
-        
         const totalRevenue = res.revenueByHotel.reduce((total,revenue) => Number(revenue.total_amount) + total,0);
         const monthly = res.revenueByHotel.map((month,index) => ({
           key: month._id,
@@ -87,7 +82,6 @@ const PartnerDashboard = () => {
     color: '#1890ff',
   };
 
-  console.log(processedData);
   const formatCurrency = (v) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(v || 0);
   
   const columns = [

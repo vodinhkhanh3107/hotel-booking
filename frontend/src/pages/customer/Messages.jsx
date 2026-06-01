@@ -9,9 +9,9 @@ const { Text, Title } = Typography;
 
 const Messages = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   // Nhận dữ liệu từ HotelDetail (id_hotel, hotel_name, hotel_avatar)
-  const hotelFromState = location.state; 
+  // const hotelFromState = location.state; 
   const scrollRef = useRef(null);
 
   const [allChats, setAllChats] = useState(() => {
@@ -79,30 +79,30 @@ const Messages = () => {
   };
 
   // XỬ LÝ KHI CÓ DATA TỪ HOTEL DETAIL TRUYỀN SANG
-  useEffect(() => {
-    if (hotelFromState?.id_hotel) {
-      const hotelId = hotelFromState.id_hotel;
-      const existedInList = allChats.find(c => c.id === hotelId);
+  // useEffect(() => {
+  //   if (hotelFromState?.id_hotel) {
+  //     const hotelId = hotelFromState.id_hotel;
+  //     const existedInList = allChats.find(c => c.id === hotelId);
 
-      if (existedInList) {
-        setSelectedChat(existedInList);
-      } else {
-        // Nếu hotel chưa có trong danh sách chat thì tạo mới
-        handleSelectChat({
-          id: hotelId,
-          name: hotelFromState.hotel_name,
-          avatar: hotelFromState.hotel_avatar,
-          lastMsg: 'Đang kết nối...',
-          time: 'Bây giờ'
-        });
-      }
+  //     if (existedInList) {
+  //       setSelectedChat(existedInList);
+  //     } else {
+  //       // Nếu hotel chưa có trong danh sách chat thì tạo mới
+  //       handleSelectChat({
+  //         id: hotelId,
+  //         name: hotelFromState.hotel_name,
+  //         avatar: hotelFromState.hotel_avatar,
+  //         lastMsg: 'Đang kết nối...',
+  //         time: 'Bây giờ'
+  //       });
+  //     }
       
-      // Xóa state trong location để tránh việc F5 lại trang nó lại tự chọn lại hotel này
-      window.history.replaceState({}, document.title);
-    } else if (!selectedChat && allChats.length > 0) {
-      setSelectedChat(allChats[0]);
-    }
-  }, [hotelFromState]);
+  //     // Xóa state trong location để tránh việc F5 lại trang nó lại tự chọn lại hotel này
+  //     window.history.replaceState({}, document.title);
+  //   } else if (!selectedChat && allChats.length > 0) {
+  //     setSelectedChat(allChats[0]);
+  //   }
+  // }, []);
 
   const handleSend = () => {
     if (!message.trim()) return;

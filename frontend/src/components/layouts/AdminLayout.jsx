@@ -95,7 +95,6 @@ const AdminLayout = () => {
       key: "/admin/revenues",
       icon: <BarChartOutlined />,
       label: "Báo cáo doanh thu",
-      level_required: 1,
     },
     {
       key: "/admin/partners",
@@ -127,7 +126,6 @@ const AdminLayout = () => {
       key: "/admin/users",
       icon: <UserOutlined />,
       label: "Quản lý người dùng",
-      level_required: 1,
     },
     {
       key: "/admin/categories",
@@ -141,9 +139,6 @@ const AdminLayout = () => {
     },
   ];
 
-  const side_menu_items = menu_config.filter(
-    (item) => !item.level_required || userLevel <= item.level_required,
-  );
 
   const user_menu_items = [
     { type: "divider" },
@@ -168,9 +163,6 @@ const AdminLayout = () => {
 
   const handleNavigate = (key) => {
     navigate(key);
-    // if(key === "/admin/partners"){
-    //   set_pending_count(0);
-    // }
   };
 
   return (
@@ -219,7 +211,7 @@ const AdminLayout = () => {
           mode="inline"
           selectedKeys={[location.pathname]}
           onClick={({ key }) => handleNavigate(key)}
-          items={side_menu_items}
+          items={menu_config}
         />
       </Sider>
 

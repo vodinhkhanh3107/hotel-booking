@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Tag, Button, Space, Card, Typography, App as AntApp, Badge, Tooltip, Empty, Tabs, Row, Col, DatePicker, Input, message } from 'antd';
 import { CheckOutlined, CloseOutlined, UserOutlined, CalendarOutlined, DollarOutlined, BankOutlined, InfoCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import { MOCK_BOOKINGS } from '../../constants/mockData.jsx';
 import { HotelApiPartner, OrderApiPartner } from '../../services/apiPartner.jsx';
 import { formatDate } from '../../helpers/date.js';
 import { useCookies } from "react-cookie";
@@ -30,7 +29,6 @@ const PartnerBookings = () => {
     const fetchApi = async () => {
         const res = await OrderApiPartner.getAllOrder(id_partner,activeTab);
         if(res.status === 200){
-          console.log(res);
           setLoading(false);
           setOrder(res.orders);
         }
@@ -39,7 +37,6 @@ const PartnerBookings = () => {
   }, [activeTab,loading,id_partner]);
 
   const handleUpdateStatus = async (id_order, status, id_room) => {
-    console.log();
     setLoading(true);
     const res = await HotelApiPartner.operationForClient(id_order,status,id_room);
     if(res.status >= 400){
@@ -57,7 +54,6 @@ const PartnerBookings = () => {
   const handleFilterDateOrder = async (dates) => {
     const check_in_date = dayjs(dates[0]).format("YYYY-MM-DD");
     const check_out_date = dayjs(dates[1]).format("YYYY-MM-DD");
-
     try{
       const res = await OrderApiPartner.getAllOrder(id_partner,activeTab,check_in_date,check_out_date);
       if(res.status >= 400){
@@ -73,6 +69,7 @@ const PartnerBookings = () => {
     }
 
     catch(error){
+      console.error(error);
       message.error("Lỗi hệ thống!")
     }
   }
@@ -228,16 +225,15 @@ const PartnerBookings = () => {
               { label: 'Chờ duyệt', key: 'PENDING' },
               { label: 'Đã xác nhận', key: 'APPROVED' },
               { label: 'Đã từ chối', key: 'REJECTED' },
+              { label: 'Hoàn thành', key: 'COMPLETED' },
             ]}
             tabBarExtraContent={
               <Space style={{ paddingBottom: 8 }} wrap>
               <Input 
                 placeholder="Mã đơn..." 
                 prefix={<SearchOutlined />} 
-                // value={textSearch}
                 onChange={e => { 
                   handleSearch(e);
-                  // setSearchBookingId(e.target.value); setCurrentPage(1);
                  }} 
                 allowClear
                 style={{ width: 130, borderRadius: 8 }}
@@ -245,10 +241,8 @@ const PartnerBookings = () => {
               <Input 
                 placeholder="Tên khách sạn..." 
                 prefix={<BankOutlined />} 
-                // value={searchHotelName}
                 onChange={e => { 
                   handleSearch(e);
-                  // setSearchHotelName(e.target.value); setCurrentPage(1);
                  }} 
                 allowClear
                 style={{ width: 180, borderRadius: 8 }}

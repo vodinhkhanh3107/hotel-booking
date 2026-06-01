@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react';
-import axiosClient from '../../services/axiosClient';
+import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, App as AntApp, Divider } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -13,13 +12,11 @@ const { Title, Text } = Typography;
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useContext(AuthContext); 
   const { message: antdMessage } = AntApp.useApp();
   const [loading, setLoading] = useState(false);
-  const [cookies, setCookie] = useCookies();
+  const [_, setCookie] = useCookies();
 
   const from = location.state?.from;
-  console.log(from);
 
   const handleNavigation = (account) => {
     antdMessage.success(`Chào mừng ${account.full_name} quay trở lại!`);
@@ -37,13 +34,11 @@ const Login = () => {
     const { email, password } = values;
     // 1. GỌI API THẬT
       const response = await AuthApiClient.login({ email, password });
-      console.log(response);
       if(response.status >= 400){
         setLoading(false);
         return antdMessage.error(response.message);
       }
       antdMessage.success(`Đăng nhập thành công!`);
-
       // Delay 100ms để AuthContext kịp lưu vào LocalStorage và Navbar nhận diện được State mới
       setTimeout(() => handleNavigation(response.account), 1000);
       setLoading(false);

@@ -116,6 +116,40 @@ module.exports.index = async (req, res) => {
         message: "Lấy danh sách đơn hàng thành công!",
       });
       return;
+    case "COMPLETED":
+      let orderCompleteds = [];
+      if (check_in_date && check_out_date) {
+        orderCompleteds = await Order.find({
+          id_hotel: { $in: idHotel },
+          status: "COMPLETED",
+          check_in_date: { $gte: check_in_date },
+          check_out_date: { $lte: check_out_date },
+        });
+        if (!orderCompleteds) {
+          return res.json({
+            status: 400,
+            message: "Không có đơn hàng nào!",
+          });
+        }
+      } else {
+        orderCompleteds = await Order.find({
+          id_hotel: { $in: idHotel },
+          status: "COMPLETED",
+        });
+        if (!orderCompleteds) {
+          return res.json({
+            status: 400,
+            message: "Không có đơn hàng nào!",
+          });
+        }
+      }
+      const allCompletedOrders = await orderHelper.getOrder(orderCompleteds);
+      return res.json({
+        orders: allCompletedOrders,
+        status: 200,
+        message: "Lấy danh sách đơn hàng thành công!",
+      });
+      return;
     default:
       let orders = [];
       if (check_in_date && check_out_date) {
@@ -150,20 +184,3 @@ module.exports.index = async (req, res) => {
   }
 };
 
-// module.exports.type = async (req, res) => {
-//   const { type } = req.query;
-//   const orders = await Order.find({
-//     status: type,
-//   });
-//   if (!orders) {
-//     return res.json({
-//       status: 400,
-//       message: "Không có đơn hàng nào!",
-//     });
-//   }
-
-//   res.json({
-//     status: 200,
-//     message: "Lấy ra danh sách đơn hàng theo phân loại thành công!",
-//   });
-// };

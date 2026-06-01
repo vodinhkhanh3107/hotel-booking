@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Card, Typography, App as AntApp } from 'antd';
 import { LockOutlined, UserOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { MOCK_USERS } from '../../constants/mockData.jsx';
 import { authApiAdmin } from '../../services/apiAdmin.jsx';
 import { useCookies } from 'react-cookie';
 
@@ -14,7 +13,7 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { message } = AntApp.useApp();
 
-  const [cookies,setCookie] = useCookies();
+  const [_ ,setCookie] = useCookies();
 
   const handleNavigation = (account) => {
     message.success(`Chào mừng quản trị viên ${account.full_name} quay trở lại`);
@@ -26,7 +25,6 @@ const AdminLogin = () => {
     const { email, password } = values;
 
     const res = await authApiAdmin.login({ email, password });
-    console.log(res);
     if(res.status >= 400){
       return message.error(res.message);
     }

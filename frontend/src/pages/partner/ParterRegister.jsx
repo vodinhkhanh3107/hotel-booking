@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axiosClient from '../../services/axiosClient';
 import { Form, Input, Button, Card, Typography, App as AntApp, Space, Divider } from 'antd';
 import { 
   UserOutlined, LockOutlined, PhoneOutlined, MailOutlined, 
@@ -38,7 +37,6 @@ const PartnerRegister = () => {
     };
 
     const res = await AuthApiPartner.register(payload);
-    console.log(res);
     if(res.status >= 400){
       return message.error(res.message);
     };

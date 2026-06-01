@@ -25,7 +25,6 @@ import {
   FileTextOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import axiosClient from "../../services/axiosClient";
 import CloudinaryUpload from "../../components/common/CloudinaryUpload";
 import { ModelRoomApiPartner } from "../../services/apiPartner";
 import { capitalize_words } from "../../helpers/capital-word";
@@ -52,7 +51,6 @@ const PartnerModelRooms = () => {
   useEffect(() => {
     const fetchApi = async () => {
       const res = await ModelRoomApiPartner.getAllModelRoom(id_partner);
-      console.log(res);
       if (res.status === 200) {
         set_is_loading(false);
         setModelRoom(res.modelRooms);
@@ -91,6 +89,7 @@ const PartnerModelRooms = () => {
             set_is_loading(false);
           }, 1000);
         } catch (error) {
+          console.error(error);
           antdMessage.error("Lỗi hệ thống!");
         }
       },
@@ -245,8 +244,6 @@ const PartnerModelRooms = () => {
                 
                 onChange={(e) => {
                   handleSearch(e)
-                  // setSearchText(e.target.value);
-                  // setCurrentPage(1); // Reset về trang 1 khi gõ tìm kiếm để không bị lỗi No Data
                 }}
                 allowClear
                 size="large"

@@ -30,12 +30,6 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 // IMPORT CONTEXT & MOCK DATA
 import AuthContext from "../../contexts/AuthContext";
-import {
-  MOCK_ROOMS,
-  MOCK_HOTELS,
-  MOCK_BOOKINGS,
-  ALL_AMENITIES,
-} from "../../constants/mockData.jsx";
 import { HotelApiClient, ReviewApiClient } from "../../services/apiClient.jsx";
 import { useCookies } from "react-cookie";
 
@@ -81,7 +75,6 @@ const HotelDetail = () => {
   const [hotelDetail, setHotelDetail] = useState({});
   const [roomDetail, setRoomDetail] = useState([]);
 
-  console.log(cookies.user)
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,17 +92,14 @@ const HotelDetail = () => {
       block: "start",
     });
   };
-          console.log(hotelDetail);
 
   useEffect(() => {
     const fetchApiHotel = async () => {
       if (id) {
         const res = await HotelApiClient.getDetailHotel(id);
-        console.log(res);
         if (res.status === 200) {
           setHotelDetail(res.detailHotel);
           setRoomDetail(res.listRoomOfHotel);
-          // setReviews(res.reviewsOfHotel);
           setTimeout(() => {
             setLoading(false);
           }, 1000);
@@ -119,7 +109,6 @@ const HotelDetail = () => {
     const fetchApiReview = async () => {
       if (id) {
         const res = await ReviewApiClient.getReview(id);
-        console.log(res);
         if (res.status === 200) {
           setReviews(res.reviews);
           setTimeout(() => {
@@ -138,6 +127,7 @@ const HotelDetail = () => {
           return;
       }
     } catch (error) {
+      console.error(error);
       antdMessage.error("Lỗi kết nối với hệ thống");
     } finally {
       setLoading(false);
@@ -156,9 +146,9 @@ const HotelDetail = () => {
     }
     navigate("/customer/messages", {
       state: {
-        id_hotel: hotel.id_hotel,
-        hotel_name: hotel.hotel_name,
-        hotel_avatar: hotel.image_url,
+        id_hotel: hotelDetail.id_hotel,
+        hotel_name: hotelDetail.hotel_name,
+        hotel_avatar: hotelDetail.image_url,
       },
     });
   };
@@ -189,9 +179,6 @@ const HotelDetail = () => {
           <Text strong style={{ fontSize: 16 }}>
             {type_room}
           </Text>
-          {/* <Text type="secondary" style={{ fontSize: 12 }}>
-            Mã phòng: #{record._id}
-          </Text> */}
         </Space>
       ),
     },

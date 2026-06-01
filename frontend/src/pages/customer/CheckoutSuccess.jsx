@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Result,
   Button,
@@ -33,16 +33,12 @@ const CheckoutSucess = () => {
 
   useEffect(() => {
     const code_order = location.state?.code_order;
-    // console.log(code_order);
-    // console.log(location);
     if(!code_order){
-      // console.log("lỗi")
       navigate("/404");
       return;
     }
     const fetchOrderDetail = async () => {
       const res = await OrderApiClient.getDetailOrder(code_order.slice(1));
-      console.log(res);
       if(res.status === 200){
         setOrderDetail(res.orderDetail);
       }

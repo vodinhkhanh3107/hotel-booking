@@ -10,10 +10,8 @@ import {
   CalendarOutlined, MessageOutlined,
   EyeOutlined
 } from '@ant-design/icons';
-import dayjs from 'dayjs';
 
 // Import dữ liệu mẫu
-import { MOCK_BOOKINGS } from '../../constants/mockData.jsx';
 import { OrderApiClient, ReviewApiClient } from '../../services/apiClient.jsx';
 import { useCookies } from 'react-cookie';
 import { formatDate } from '../../helpers/date.js';
@@ -23,7 +21,7 @@ const { Title, Text } = Typography;
 
 const CustomerBookings = () => {
   const navigate = useNavigate();
-  const [cookies,setCookies] = useCookies();
+  const [cookies,_] = useCookies();
   const [orders,setOrder] = useState([]);
 
   const { message: antdMessage } = AntApp.useApp();
@@ -112,10 +110,8 @@ const CustomerBookings = () => {
   }
 
   const handleCancelBooking = async (id) => {
-    console.log(id);
     try{
       const res = await OrderApiClient.cancelOrder(id);
-      console.log(res);
       if(res.status >= 400){
         antdMessage.error(res.message);
         return;
@@ -129,6 +125,7 @@ const CustomerBookings = () => {
     }
 
     catch(error){
+      console.error(error);
       antdMessage.error("Lỗi hệ thống!");
     }
   }
@@ -305,7 +302,6 @@ const CustomerBookings = () => {
 
       <Tabs 
         activeKey={activeTab} 
-        // onChange={() => handleActiveStatus}
         onChange={handleActiveTab}
         items={[
           { label: 'Tất cả đơn', key: '' },
