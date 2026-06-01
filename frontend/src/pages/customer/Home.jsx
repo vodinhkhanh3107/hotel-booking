@@ -68,10 +68,10 @@ const VIETNAM_PROVINCES = [
 ];
 
 const Home = () => {
+  const [allCity,setAllCity] = useState([]);
   const refModelHotel = useRef("");
   const refCity = useRef("");
   const navigate = useNavigate();
-  const [sortedDestinations, setSortedDestinations] = useState([]);
   const [modelHotel, setModelHotel] = useState([]);
   const [query, setQuery] = useState("");
   const [featuredHotels, setFeaturedHotels] = useState([]);
@@ -122,21 +122,27 @@ const Home = () => {
   }, []);
 
   // lấy ra các tỉnh thành việt nam
-  const cityCount = {};
-  const sDests = VIETNAM_PROVINCES.map((p) => ({
-    city: p.name,
-    img: `/assets/${p.slug}.jpg`,
-    realCount: cityCount[p.name] || 0,
-  })).sort((a, b) => b.realCount - a.realCount);
+  
   useEffect(() => {
+    const cityCount = {};
+    const sDests = VIETNAM_PROVINCES.map((p) => ({
+      city: p.name,
+      img: `/assets/${p.slug}.jpg`,
+      realCount: cityCount[p.name] || 0,
+    })).sort((a, b) => b.realCount - a.realCount);
     const fetchData = async () => {
       setTimeout(() => {
-        setSortedDestinations(sDests.slice(0,12)); // Hiện Top 12 phổ biến nhất
+        setAllCity(sDests);
         setLoading(false);
-      }, 600);
+      }, 1000);
     };
     fetchData();
-  }, [sDests]);
+  }, []);
+
+  const currentCities = allCity.slice(
+    (currentPage - 1) * 12,
+    currentPage * 12
+  );
 
   const handleSetQuery = (city) => {
     refCity.current = city;
@@ -297,7 +303,7 @@ const Home = () => {
           </Title>
 
           <Row gutter={[16, 16]}>
-            {sortedDestinations.map((dest, index) => (
+            {currentCities.map((dest, index) => (
               <Col xs={12} sm={8} md={4} key={index}>
                 <div
                   style={{ cursor: "pointer" }}
@@ -343,7 +349,6 @@ const Home = () => {
               current={currentPage}
               total={34}
               onChange={(page) => {
-                setSortedDestinations(sDests.slice(12 * (page - 1), 12 * (page)));
                 setCurrentPage(page);
               }}
             />
