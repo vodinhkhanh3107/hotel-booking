@@ -90,9 +90,9 @@ function App() {
             <ScrollToTop />
 
             <Routes>
-              <Route path="/404" element={<ErrorPage />} /> 
+              <Route path="/404" element={<ErrorPage />} />
               {/* GIAO DIỆN CHUNG (GUEST & CUSTOMER) */}
-              <Route element={<CustomerLayout />} >
+              <Route element={<CustomerLayout />}>
                 <Route path="/guest" element={<GuestHome />} />
                 <Route path="/guest/hotels" element={<GuestHotelList />} />
                 <Route path="/guest/hotel/:id" element={<GuestHotelDetail />} />
@@ -101,14 +101,10 @@ function App() {
                 <Route path="hotels" element={<CustomerHotelList />} />
                 <Route path="hotel/:id" element={<CustomerHotelDetail />} />
                 <Route path="checkout/:id_room" element={<Checkout />} />
-                <Route path="checkout/success" element={<CheckoutSucess />}/>
-                <Route
-                  path="customerbookings"
-                  element={<CustomerBookings />}
-                />
+                <Route path="checkout/success" element={<CheckoutSucess />} />
+                <Route path="customerbookings" element={<CustomerBookings />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="messages" element={<CustomerMessages />} />
-                
               </Route>
 
               {/* LOGIN/REGISTER */}
@@ -120,7 +116,7 @@ function App() {
               <Route path="/partner/register" element={<PartnerRegister />} />
 
               {/* PARTNER SYSTEM */}
-              <Route>
+              <Route element={<ProtectedRoute allowedRoles={["partner"]} />}>
                 <Route path="/partner" element={<PartnerLayout />}>
                   <Route
                     index
@@ -138,12 +134,12 @@ function App() {
               </Route>
 
               {/* ADMIN SYSTEM */}
-              <Route>
+              <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
                 <Route path="/admin" element={<AdminLayout />}>
-                  <Route
+                  {/* <Route
                     index
                     element={<Navigate to="/admin/dashboard" replace />}
-                  />
+                  /> */}
                   <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="profile" element={<AdminProfile />} />
                   <Route path="partners" element={<AdminPartners />} />

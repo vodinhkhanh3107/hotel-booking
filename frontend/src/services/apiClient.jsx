@@ -73,9 +73,6 @@ export const AccountApiClient = {
 
 export const HotelApiClient = {
   getAllHotel: async () => {
-    console.log("MODE:", import.meta.env.MODE);
-    console.log("DEV:", import.meta.env.DEV);
-
     const res = await request.get(`/hotel`);
     return res;
   },

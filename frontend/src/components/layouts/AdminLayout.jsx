@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Layout,
   Menu,
@@ -28,7 +28,6 @@ import {
   Outlet,
   useNavigate,
   useLocation,
-  useOutletContext,
 } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { HotelApiAdmin } from "../../services/apiAdmin";
@@ -50,16 +49,8 @@ const AdminLayout = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const userData = sessionStorage.getItem("user");
-  const user = userData ? JSON.parse(userData) : null;
 
   const admin = cookies.admin;
-  useEffect(() => {
-    if (!admin) {
-      message.error("Bạn không có quyền truy cập vùng này!");
-      navigate("/admin/login");
-    }
-  }, [admin, navigate, message]);
 
   const fetchPendingCount = async () => {
     try {
@@ -88,7 +79,6 @@ const AdminLayout = () => {
 
     fetchData();
   }, [message]);
-  const userLevel = user?.level || 1;
 
   const menu_config = [
     {
